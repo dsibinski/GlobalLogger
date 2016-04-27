@@ -1,0 +1,375 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+    <title>GlobalLogger - GlobalLogger Documentation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <link type="text/css" rel="stylesheet" href="../main.css"/>
+    <script type="text/javascript" src="../js/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.scrollTo-min.js"></script>
+    <script type="text/javascript" src="../js/navigation.js"></script>
+    <script type="text/javascript" src="../js/example.js"></script>
+  </head>
+  <body>
+  	<header><h1>GlobalLogger : API Documentation</h1>
+	</header>
+<nav id="namespaces">
+	<h2 class="fixed">Namespaces</h2>
+	<div class="scroll">
+		<ul>
+			<li>
+          <a href="../LogHelper/index.htm" class="current">LogHelper</a>
+      </li>
+			<li>
+          <a href="../LogHelper.Enums/index.htm">LogHelper.Enums</a>
+      </li>
+			<li>
+          <a href="../LogHelper.Exceptions/index.htm">LogHelper.Exceptions</a>
+      </li>
+		</ul>
+	</div>
+</nav><nav id="types">
+  <h2 class="fixed">Types in LogHelper</h2>
+	<div class="scroll">
+		<ul>
+				<li>
+            <a href="../LogHelper/GlobalLogger.htm" class="current">GlobalLogger</a>
+        </li>
+				<li>
+            <a href="../LogHelper/GlobalLoggerFluentApi.htm">GlobalLoggerFluentApi</a>
+        </li>
+				<li>
+            <a href="../LogHelper/Level.htm">Level</a>
+        </li>
+		</ul>
+	</div>
+</nav>
+	<article>
+    <header>
+		<p class="class"><strong>Type</strong> GlobalLogger</p>
+	</header>
+	<section>
+		<header>
+		<p><strong>Namespace</strong> LogHelper</p>
+		</header>
+    <div class="sub-header">
+			<div id="summary">Main logger class. This class's instance can be created as the logger object. 
+			</div>
+		
+		
+			<h3 class="section">Methods</h3>
+			<ul>
+				<li><a href="../LogHelper/GlobalLogger.htm#ClearPersistentProperties">ClearPersistentProperties</a></li>
+				<li><a href="../LogHelper/GlobalLogger.htm#ClearVolatileProperties">ClearVolatileProperties</a></li>
+				<li><a href="../LogHelper/GlobalLogger.htm#LogDebug">LogDebug</a></li>
+				<li><a href="../LogHelper/GlobalLogger.htm#LogError">LogError</a></li>
+				<li><a href="../LogHelper/GlobalLogger.htm#LogException">LogException</a></li>
+				<li><a href="../LogHelper/GlobalLogger.htm#LogFatal">LogFatal</a></li>
+				<li><a href="../LogHelper/GlobalLogger.htm#LogInfo">LogInfo</a></li>
+				<li><a href="../LogHelper/GlobalLogger.htm#LogTrace">LogTrace</a></li>
+				<li><a href="../LogHelper/GlobalLogger.htm#LogWarning">LogWarning</a></li>
+				<li><a href="../LogHelper/GlobalLogger.htm#StartTimer">StartTimer</a></li>
+				<li><a href="../LogHelper/GlobalLogger.htm#StopTimer">StopTimer</a></li>
+				<li><a href="../LogHelper/GlobalLogger.htm#StopTimer">StopTimer</a></li>
+			</ul>
+		
+			<h3 class="section">Properties</h3>
+			<ul>
+				<li><a href="../LogHelper/GlobalLogger.htm#Name">Name</a></li>
+			</ul>
+		
+	</div>
+	
+	<h3 class="section">Public instance methods</h3>
+
+	<div id="ClearPersistentProperties" class="method">
+		<h4>
+			<span title="System.void">void</span> <strong>ClearPersistentProperties</strong>()
+		</h4>
+		<div class="content">Clears the persistent properties list of the logger 
+
+
+
+
+		</div>
+	</div>
+	<div id="ClearVolatileProperties" class="method">
+		<h4>
+			<span title="System.void">void</span> <strong>ClearVolatileProperties</strong>()
+		</h4>
+		<div class="content">Clears the volatile properties list of the logger 
+
+
+
+
+		</div>
+	</div>
+	<div id="LogDebug" class="method">
+		<h4>
+			<span title="System.void">void</span> <strong>LogDebug</strong>(<span title="System.string">string</span> message)
+		</h4>
+		<div class="content">Logs a message with LogLevel set as Debug 
+
+
+			<div class="parameters">
+				<h5>Parameters</h5>
+				<dl>
+						<dt>
+							<code><span title="System.string">string</span></code> message
+						</dt>
+						<dd>Message content to be logged 
+						</dd>
+				</dl>
+			</div>
+
+
+		</div>
+	</div>
+	<div id="LogError" class="method">
+		<h4>
+			<span title="System.void">void</span> <strong>LogError</strong>(<span title="System.string">string</span> message)
+		</h4>
+		<div class="content">Logs a message with LogLevel set as Error 
+
+
+			<div class="parameters">
+				<h5>Parameters</h5>
+				<dl>
+						<dt>
+							<code><span title="System.string">string</span></code> message
+						</dt>
+						<dd>Message content to be logged 
+						</dd>
+				</dl>
+			</div>
+
+
+		</div>
+	</div>
+	<div id="LogException" class="method">
+		<h4>
+			<span title="System.void">void</span> <strong>LogException</strong>(<span title="System.Exception">Exception</span> exception, <span title="System.string">string</span> additionalMessage, <a href="../LogHelper/Level.htm">Level</a> level)
+		</h4>
+		<div class="content">Logs an exception with an optional additional message.
+The default log level, if none provided, is 'Error'. 
+
+
+			<div class="parameters">
+				<h5>Parameters</h5>
+				<dl>
+						<dt>
+							<code><span title="System.Exception">Exception</span></code> exception
+						</dt>
+						<dd>The exception to be logged. 
+						</dd>
+						<dt>
+							<code><span title="System.string">string</span></code> additionalMessage
+						</dt>
+						<dd>An optional message to accompany the exception. 
+						</dd>
+						<dt>
+							<code><a href="../LogHelper/Level.htm">Level</a></code> level
+						</dt>
+						<dd>The level at which the exception and message will be logged. 
+						</dd>
+				</dl>
+			</div>
+
+
+		</div>
+	</div>
+	<div id="LogFatal" class="method">
+		<h4>
+			<span title="System.void">void</span> <strong>LogFatal</strong>(<span title="System.string">string</span> message)
+		</h4>
+		<div class="content">Logs a message with LogLevel set as Fatal 
+
+
+			<div class="parameters">
+				<h5>Parameters</h5>
+				<dl>
+						<dt>
+							<code><span title="System.string">string</span></code> message
+						</dt>
+						<dd>Message content to be logged 
+						</dd>
+				</dl>
+			</div>
+
+
+		</div>
+	</div>
+	<div id="LogInfo" class="method">
+		<h4>
+			<span title="System.void">void</span> <strong>LogInfo</strong>(<span title="System.string">string</span> message)
+		</h4>
+		<div class="content">Logs a message with LogLevel set as Info 
+
+
+			<div class="parameters">
+				<h5>Parameters</h5>
+				<dl>
+						<dt>
+							<code><span title="System.string">string</span></code> message
+						</dt>
+						<dd>Message content to be logged 
+						</dd>
+				</dl>
+			</div>
+
+
+		</div>
+	</div>
+	<div id="LogTrace" class="method">
+		<h4>
+			<span title="System.void">void</span> <strong>LogTrace</strong>(<span title="System.string">string</span> message)
+		</h4>
+		<div class="content">Logs a message with LogLevel set as Trace 
+
+
+			<div class="parameters">
+				<h5>Parameters</h5>
+				<dl>
+						<dt>
+							<code><span title="System.string">string</span></code> message
+						</dt>
+						<dd>Message content to be logged 
+						</dd>
+				</dl>
+			</div>
+
+
+		</div>
+	</div>
+	<div id="LogWarning" class="method">
+		<h4>
+			<span title="System.void">void</span> <strong>LogWarning</strong>(<span title="System.string">string</span> message)
+		</h4>
+		<div class="content">Logs a message with LogLevel set as Warn (Warning) 
+
+
+			<div class="parameters">
+				<h5>Parameters</h5>
+				<dl>
+						<dt>
+							<code><span title="System.string">string</span></code> message
+						</dt>
+						<dd>Message content to be logged 
+						</dd>
+				</dl>
+			</div>
+
+
+		</div>
+	</div>
+	<div id="StartTimer" class="method">
+		<h4>
+			<span title="System.void">void</span> <strong>StartTimer</strong>(<span title="System.string">string</span> timerName)
+		</h4>
+		<div class="content">Creates and starts timer by it's unique name specified as a parameter 
+
+
+			<div class="parameters">
+				<h5>Parameters</h5>
+				<dl>
+						<dt>
+							<code><span title="System.string">string</span></code> timerName
+						</dt>
+						<dd>Unique name of the timer 
+						</dd>
+				</dl>
+			</div>
+
+
+		</div>
+	</div>
+	<div id="StopTimer" class="method">
+		<h4>
+			<span title="System.void">void</span> <strong>StopTimer</strong>(<span title="System.string">string</span> timerName, <span title="NLog.LogLevel">LogLevel</span> logLevel)
+		</h4>
+		<div class="content">Stops timer given by it's name as a parameter and logs the measured time 
+
+
+			<div class="parameters">
+				<h5>Parameters</h5>
+				<dl>
+						<dt>
+							<code><span title="System.string">string</span></code> timerName
+						</dt>
+						<dd>Unique name of the timer 
+						</dd>
+						<dt>
+							<code><span title="NLog.LogLevel">LogLevel</span></code> logLevel
+						</dt>
+						<dd>Log level for logging the measured time (LogLevel.Trace if not specified) 
+						</dd>
+				</dl>
+			</div>
+
+
+		</div>
+	</div>
+	<div id="StopTimer" class="method">
+		<h4>
+			<span title="System.void">void</span> <strong>StopTimer</strong>(<span title="System.string">string</span> timerName, <span title="NLog.LogLevel">LogLevel</span> logLevel, <span title="System.string">string</span> messageString, <a href="../LogHelper.Enums/TimeUnit.htm">TimeUnit</a> timeUnit, <span title="System.bool">bool</span> showTimerName)
+		</h4>
+		<div class="content">Stops timer given by it's name as a parameter and logs the measured time 
+
+
+			<div class="parameters">
+				<h5>Parameters</h5>
+				<dl>
+						<dt>
+							<code><span title="System.string">string</span></code> timerName
+						</dt>
+						<dd>Unique name of the timer 
+						</dd>
+						<dt>
+							<code><span title="NLog.LogLevel">LogLevel</span></code> logLevel
+						</dt>
+						<dd>Log level for logging the measured time (LogLevel.Trace if not specified) 
+						</dd>
+						<dt>
+							<code><span title="System.string">string</span></code> messageString
+						</dt>
+						<dd>Message which will be logged (requires {0} for the time value) 
+						</dd>
+						<dt>
+							<code><a href="../LogHelper.Enums/TimeUnit.htm">TimeUnit</a></code> timeUnit
+						</dt>
+						<dd>TimeUnit to specify the precision of measured time to be logged 
+						</dd>
+						<dt>
+							<code><span title="System.bool">bool</span></code> showTimerName
+						</dt>
+						<dd>If set to true, "[TimerName]" tag will be added in the beginning of log message 
+						</dd>
+				</dl>
+			</div>
+
+
+		</div>
+	</div>
+	
+	
+	<h3 class="section">Public properties</h3>
+
+	<div id="Name" class="method">
+		<h4>
+			<span title="System.string">string</span> <strong>Name</strong> get; set;
+		</h4>
+		<div class="content">
+
+		</div>
+	</div>
+	</section>
+	</article><footer>
+	<span id="version">Built from v1.0.0.0 of GlobalLogger</span>
+	<span id="docu-link">
+		Generated by <a href="http://docu.jagregory.com">docu</a>
+	</span>
+</footer>
+  </body>
+</html>
