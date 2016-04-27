@@ -24,7 +24,7 @@ namespace GlobalLogger
     }
 
     /// <summary>
-    /// Main logger class. This class's instance can be created as the logger object.
+    /// Main logger class. This class's instance can be created as the logger object .
     /// </summary>
     public class GlobalLogger
     {
