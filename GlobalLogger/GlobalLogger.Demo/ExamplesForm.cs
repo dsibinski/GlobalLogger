@@ -14,7 +14,7 @@ namespace GlobalLogger.Demo
     {
         #region Examples - Logger
 
-        private GlobalLogger Logger;
+        private LogHelper Logger;
 
         #endregion Examples - Logger
 
@@ -90,9 +90,7 @@ namespace GlobalLogger.Demo
         private void BtnSimpleLogger_Click(object sender, EventArgs e)
         {
             // Default - named after calling class
-            Logger = new GlobalLogger();
-            
-           
+            Logger = new LogHelper();
         }
 
         private void BtnTimeLog_Click(object sender, EventArgs e)
@@ -119,7 +117,7 @@ namespace GlobalLogger.Demo
             }
             catch (Exception ex)
             {
-                Logger = new GlobalLogger();
+                Logger = new LogHelper();
                 Logger.LogException(ex, "Oups, something went wrong:" + Environment.NewLine, Level.Fatal);
                 //            Logger.LogException(ex, "Oups, something went wrong:");       
                 //            Logger.LogException(ex);
@@ -128,7 +126,7 @@ namespace GlobalLogger.Demo
 
         private void BtnNamedLogger_Click(object sender, EventArgs e)
         {
-            Logger = new GlobalLogger("LoggerAndrew");
+            Logger = new LogHelper("LoggerAndrew");
         }
 
         #endregion Examples methods
@@ -137,7 +135,7 @@ namespace GlobalLogger.Demo
         private void BtnComplexLogger_Click(object sender, EventArgs e)
         {
             var Youenn = new Programmer("Youenn");
-            Logger = new GlobalLogger(Youenn);
+            Logger = new LogHelper(Youenn);
         }
 
         class Programmer

@@ -22,7 +22,7 @@ namespace GlobalLogger.Demo.Models
             Position = "Employee";
 
             // test object ctor. TODO put this in a separate class for tests
-            var logger1 = new GlobalLogger(this);
+            var logger1 = new LogHelper(this);
             logger1.LogTrace("new Employee created (custom ctor with object param)");
 
             logger1.StartTimer("Timer1");
@@ -34,11 +34,11 @@ namespace GlobalLogger.Demo.Models
            logger1.StopTimer("Timer1", Level.Trace, "Measured time was: {0}", TimeUnit.Seconds);
 
             // test string ctor. TODO put this in a separate class for tests
-            var logger2 = new GlobalLogger("CustomLoggerName");
+            var logger2 = new LogHelper("CustomLoggerName");
             logger2.LogTrace("new Employee created (custom ctor with string param)");
 
             // test fluent api to add properties
-            var fluentLogger = new GlobalLogger();
+            var fluentLogger = new LogHelper();
             fluentLogger
                 .AddOrUpdatePersistentProperty("firstName", FirstName)
                 .AddOrUpdatePersistentProperty("lastName", LastName)
@@ -54,7 +54,7 @@ namespace GlobalLogger.Demo.Models
             fluentLogger
                 .LogInfo("Test the fluent API 3!");
 
-            var logger = new GlobalLogger();
+            var logger = new LogHelper();
             // Explicitly clear the persistent properties! TODO decide if the clear method should be available from fluen API?
             fluentLogger.ClearPersistentProperties();
             fluentLogger.LogInfo("Test the fluent API 4!");

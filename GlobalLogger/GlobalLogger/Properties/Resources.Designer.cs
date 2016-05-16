@@ -88,7 +88,7 @@ namespace GlobalLogger.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [CRITICAL] NLog could not be properly initialized! Make sure there is at least one valid configuration file available either in the application&apos;s main folder or in the following folder: {0}.
+        ///   Looks up a localized string similar to [CRITICAL] NLog could not be properly initialized! Make sure there is at least one valid configuration file available in the following folder: {0}.
         /// </summary>
         internal static string ErrorNLogInitFailWrongConfiguration {
             get {

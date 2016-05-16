@@ -3,9 +3,9 @@
 namespace GlobalLogger
 {
     /// <summary>
-    /// Provides the FluentAPI methods for GlobalLogger.
+    /// Provides the FluentAPI methods for LogHelper.
     /// </summary>
-    public static class GlobalLoggerFluentApi
+    public static class LogHelperFluentApi
     {
         /// <summary>
         /// Add a new persistent property to the logger or update it if it already exists. Persistent properties live in the logger until they are explicity cleared.
@@ -14,7 +14,7 @@ namespace GlobalLogger
         /// <param name="name"> Name of the property to be added or updated. </param>
         /// <param name="value"> Value of the property to be added or updated. </param>
         /// <returns></returns>
-        public static GlobalLogger AddOrUpdatePersistentProperty(this GlobalLogger logger, string name, Object value)
+        public static LogHelper AddOrUpdatePersistentProperty(this LogHelper logger, string name, Object value)
         {
             logger.AddOrUpdateProperty(name, value, true);
             return logger;
@@ -27,7 +27,7 @@ namespace GlobalLogger
         /// <param name="name"> Name of the property to be added or updated. </param>
         /// <param name="value"> Value of the property to be added or updated. </param>
         /// <returns></returns>
-        public static GlobalLogger AddOrUpdateVolatileProperty(this GlobalLogger logger, string name, Object value)
+        public static LogHelper AddOrUpdateVolatileProperty(this LogHelper logger, string name, Object value)
         {
             logger.AddOrUpdateProperty(name, value, false);
             return logger;

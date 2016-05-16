@@ -3,7 +3,7 @@
 namespace GlobalLogger.Exceptions
 {
     /// <summary>
-    /// Custom exception thrown by GlobalLogger
+    /// Custom exception thrown by LogHelper
     /// </summary>
     public class GlobalLoggerException : Exception
     {

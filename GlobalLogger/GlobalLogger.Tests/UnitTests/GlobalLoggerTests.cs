@@ -9,7 +9,7 @@ namespace GlobalLogger.Tests.UnitTests
 {
     public class BaseClass
     {
-        public GlobalLogger Logger { get; set; }
+        public LogHelper Logger { get; set; }
     }
 
     public class DerivedClass : BaseClass
@@ -22,7 +22,7 @@ namespace GlobalLogger.Tests.UnitTests
         public void TestDefaultConstructor_LoggerName_OK()
         {
             var type = new BaseClass();
-            type.Logger = new GlobalLogger();
+            type.Logger = new LogHelper();
 
             type.Logger.Name.Should().Be("GlobalLogger.Tests.UnitTests.GlobalLoggerTests", "because we are using the default constructor (calling class)");
         }
@@ -31,7 +31,7 @@ namespace GlobalLogger.Tests.UnitTests
         public void TestTypeConstructorBaseClass__LoggerName_OK()
         {
             var type = new BaseClass();
-            type.Logger = new GlobalLogger(type);
+            type.Logger = new LogHelper(type);
 
             type.Logger.Name.Should().Be("GlobalLogger.Tests.UnitTests.BaseClass", "because we are using the type constructor on the base class");
         }
@@ -40,7 +40,7 @@ namespace GlobalLogger.Tests.UnitTests
         public void TestTypeConstructorDerivedClass__LoggerName_OK()
         {
             var type = new DerivedClass();
-            type.Logger = new GlobalLogger(type);
+            type.Logger = new LogHelper(type);
 
             type.Logger.Name.Should().Be("GlobalLogger.Tests.UnitTests.DerivedClass", "because we are using the type constructor on the derived class");
         }
@@ -51,7 +51,7 @@ namespace GlobalLogger.Tests.UnitTests
         {
             string loggerName = null;
             BaseClass type = null;
-            type.Logger = new GlobalLogger(type);
+            type.Logger = new LogHelper(type);
         }
 
         [Test]
@@ -60,18 +60,18 @@ namespace GlobalLogger.Tests.UnitTests
         {
             string loggerName = null;
             var type = new BaseClass();
-            type.Logger = new GlobalLogger(loggerName);
+            type.Logger = new LogHelper(loggerName);
         }
 
         [Test]
         public void TestVolatileProperty_ClearAfterLog_OK()
         {
             var type = new BaseClass();
-            type.Logger = new GlobalLogger(type);
+            type.Logger = new LogHelper(type);
 
             type.Logger.AddOrUpdateVolatileProperty("age", 10);
 
-            var volatileProperties = typeof(GlobalLogger).GetField("_volatileProperties", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(type.Logger) as Dictionary<string, Object>;
+            var volatileProperties = typeof(LogHelper).GetField("_volatileProperties", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(type.Logger) as Dictionary<string, Object>;
 
             volatileProperties.Should().NotBeNull("because volatile properties must always be initialized");
             volatileProperties.Count.Should().Be(1, "because one volatile property was added");
@@ -87,11 +87,11 @@ namespace GlobalLogger.Tests.UnitTests
         public void TestVolatileProperty_ExplicitClear_OK()
         {
             var type = new BaseClass();
-            type.Logger = new GlobalLogger(type);
+            type.Logger = new LogHelper(type);
 
             type.Logger.AddOrUpdateVolatileProperty("age", 10);
 
-            var volatileProperties = typeof(GlobalLogger).GetField("_volatileProperties", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(type.Logger) as Dictionary<string, Object>;
+            var volatileProperties = typeof(LogHelper).GetField("_volatileProperties", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(type.Logger) as Dictionary<string, Object>;
 
             volatileProperties.Should().NotBeNull("because volatile properties must always be initialized");
             volatileProperties.Count.Should().Be(1, "because one volatile property was added");
@@ -107,11 +107,11 @@ namespace GlobalLogger.Tests.UnitTests
         public void TestPersistentProperty_PersistentAfterLog_OK()
         {
             var type = new BaseClass();
-            type.Logger = new GlobalLogger(type);
+            type.Logger = new LogHelper(type);
 
             type.Logger.AddOrUpdatePersistentProperty("age", 10);
 
-            var persistentProperties = typeof(GlobalLogger).GetField("_persistentProperties", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(type.Logger) as Dictionary<string, Object>;
+            var persistentProperties = typeof(LogHelper).GetField("_persistentProperties", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(type.Logger) as Dictionary<string, Object>;
 
             persistentProperties.Should().NotBeNull("because volatile properties must always be initialized");
             persistentProperties.Count.Should().Be(1, "because one volatile property was added");
@@ -127,11 +127,11 @@ namespace GlobalLogger.Tests.UnitTests
         public void TestPersistentProperty_ExplicitClear_OK()
         {
             var type = new BaseClass();
-            type.Logger = new GlobalLogger(type);
+            type.Logger = new LogHelper(type);
 
             type.Logger.AddOrUpdatePersistentProperty("age", 10);
 
-            var persistentProperties = typeof(GlobalLogger).GetField("_persistentProperties", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(type.Logger) as Dictionary<string, Object>;
+            var persistentProperties = typeof(LogHelper).GetField("_persistentProperties", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(type.Logger) as Dictionary<string, Object>;
 
             persistentProperties.Should().NotBeNull("because persistent properties must always be initialized");
             persistentProperties.Count.Should().Be(1, "because one persistent property was added");
@@ -147,7 +147,7 @@ namespace GlobalLogger.Tests.UnitTests
         public void TestDefaultConstructor_Init_OK()
         {
             var type = new BaseClass();
-            type.Logger = new GlobalLogger();
+            type.Logger = new LogHelper();
 
             CheckIfPropertiesProperlyInitialized(type);
         }
@@ -156,7 +156,7 @@ namespace GlobalLogger.Tests.UnitTests
         public void TestTypeConstructor_Init_OK()
         {
             var type = new DerivedClass();
-            type.Logger = new GlobalLogger(type);
+            type.Logger = new LogHelper(type);
 
             CheckIfPropertiesProperlyInitialized(type);
         }
@@ -166,15 +166,15 @@ namespace GlobalLogger.Tests.UnitTests
         {
             var loggerName = "myCustomLoggerName";
             var type = new DerivedClass();
-            type.Logger = new GlobalLogger(loggerName);
+            type.Logger = new LogHelper(loggerName);
 
             CheckIfPropertiesProperlyInitialized(type);
         }
 
         private static void CheckIfPropertiesProperlyInitialized(BaseClass type)
         {
-            var persistentProperties = typeof(GlobalLogger).GetField("_persistentProperties", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(type.Logger);
-            var volatileProperties = typeof(GlobalLogger).GetField("_volatileProperties", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(type.Logger);
+            var persistentProperties = typeof(LogHelper).GetField("_persistentProperties", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(type.Logger);
+            var volatileProperties = typeof(LogHelper).GetField("_volatileProperties", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(type.Logger);
 
             persistentProperties.Should().NotBe(null, "because InitializePropertiesContainers must be called from every constructor");
             volatileProperties.Should().NotBe(null, "because InitializePropertiesContainers must be called from every constructor");

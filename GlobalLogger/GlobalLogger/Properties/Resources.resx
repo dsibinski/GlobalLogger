@@ -115,7 +115,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ErrorNLogInitFailWrongConfiguration" xml:space="preserve">
-    <value>[CRITICAL] NLog could not be properly initialized! Make sure there is at least one valid configuration file available either in the application's main folder or in the following folder: {0}</value>
+    <value>[CRITICAL] NLog could not be properly initialized! Make sure there is at least one valid configuration file available in the following folder: {0}</value>
   </data>
   <data name="ErrorNLogElementNotFound" xml:space="preserve">
     <value>Nlog tag could not be found in the following file: &lt;{0}&gt;. Make sure the file is a valid NLog configuration file</value>

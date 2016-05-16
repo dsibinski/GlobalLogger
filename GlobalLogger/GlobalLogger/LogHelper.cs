@@ -26,57 +26,57 @@ namespace GlobalLogger
     /// <summary>
     /// Main logger class. This class's instance can be created as the logger object .
     /// </summary>
-    public class GlobalLogger
+    public class LogHelper
     {
         #region Configuration
         private const string ConfigFilesPath = "LogConfigurations";
 
         /// <summary>
-        /// Static constructor - called once, before the first use of GlobalLogger. Sets all fixed logger's properties.
+        /// Static constructor - called once, before the first use of LogHelper. Sets all fixed logger's properties.
         /// </summary>
-        static GlobalLogger()
+        static LogHelper()
         {
-            var mainConfigFile = String.Empty;
-
-            // get the main configuration file
-            if (LogManager.Configuration != null)
-                mainConfigFile = LogManager.Configuration.FileNamesToWatch.FirstOrDefault();
             
+
+            #region OBSOLETE
+            // [DS] Decided not to use main config file anymore. GlobalLogger is dedicates solution, and it may cause
+            // [DS] many problems if e.g. NLog.config file contains variables set in the external code, not in the config itself.
+            // [DS] GlobalLogger is then not able to parse such config file.
+            // [DS] GlobalLogger will now only use configs located in LogConfigurations folder.
+            // get the main configuration file
+          /*  var mainConfigFile = String.Empty;
+            if (LogManager.Configuration != null)
+                mainConfigFile = LogManager.Configuration.FileNamesToWatch.FirstOrDefault();*/
+            #endregion OBSOLETE
+
             // check if additional config files might be available
             var configFilesFolderExist = Directory.Exists(ConfigFilesPath);
 
-            var additionalConfigFiles = new List<string>(4);
+            var configFiles = new List<string>(4);
             if (configFilesFolderExist)
             {
-                additionalConfigFiles = Directory.GetFiles(ConfigFilesPath)
+                configFiles = Directory.GetFiles(ConfigFilesPath)
                                                  .Where(filename => !String.IsNullOrEmpty(filename))
                                                  .Where(filename => Path.GetExtension(filename).Equals(".config")).ToList();
             }
 
-            var otherConfigFileExist = configFilesFolderExist && additionalConfigFiles.Any();
+            var colfigFilesExist = configFilesFolderExist && configFiles.Any();
 
             // if no config file could be found (main or additional), report critical config issue
-            if (String.IsNullOrEmpty(mainConfigFile) && !otherConfigFileExist)
+            if (!colfigFilesExist)
                 throw new NLogConfigurationException(string.Format(Resources.ErrorNLogInitFailWrongConfiguration, ConfigFilesPath));
-            
-            List<string> filesToBeIncluded;
-            if (!String.IsNullOrEmpty(mainConfigFile))
-            {
-                // here check that every additional config is loaded (include tag in the main config file)
-                if (otherConfigFileExist)
-                    filesToBeIncluded = GetFilesToBeIncluded(additionalConfigFiles);
-                else
-                    return; // no additional config file to be loaded, initialization of NLog is complete!
-            }
-            else
-            {
-                // There is no main config file yet. Set the first additional file as if it was the main one
-                mainConfigFile = additionalConfigFiles.First();
-                LogManager.Configuration = new XmlLoggingConfiguration(mainConfigFile);
 
-                // here check that every additional config is loaded (include tag in the main config file)
-                filesToBeIncluded = GetFilesToBeIncluded(additionalConfigFiles);
-            }
+
+
+            List<string> filesToBeIncluded;
+
+            // Get the first config file as the main one
+            var mainConfigFile = configFiles.First();
+            LogManager.Configuration = new XmlLoggingConfiguration(mainConfigFile);
+
+            // here check that every additional config is loaded (include tag in the main config file)
+            filesToBeIncluded = GetFilesToBeIncluded(configFiles);
+
 
             // Add include tags to the main config file for the missing additional config files
             IncludeAdditionalConfigFiles(mainConfigFile, filesToBeIncluded);
@@ -126,9 +126,22 @@ namespace GlobalLogger
         private static List<string> GetFilesToBeIncluded(List<string> additionalConfigFiles)
         {
             var filesToBeIncluded = new List<string>();
-            filesToBeIncluded.AddRange(additionalConfigFiles.Where(additionalConfigFile => !LogManager.Configuration.FileNamesToWatch.Contains(additionalConfigFile)));
+            var fileNamesToWatchLocalPaths = LogManager.Configuration.FileNamesToWatch.Select(GetConfigLocalFilePath);
+
+            filesToBeIncluded.AddRange(additionalConfigFiles.Where(
+                additionalConfigFile => !fileNamesToWatchLocalPaths.Contains(GetConfigLocalFilePath(additionalConfigFile))));
 
             return filesToBeIncluded;
+        }
+
+        /// <summary>
+        /// Returns the local config file path (related to logger's directory), e.g. LogConfigurations\custom_config.config
+        /// </summary>
+        /// <param name="configFilePartOrFullPath">Path to the config file (part or full path)</param>
+        /// <returns>Local config file path</returns>
+        private static string GetConfigLocalFilePath(string configFilePartOrFullPath)
+        {
+            return ConfigFilesPath + "\\" + Path.GetFileName(configFilePartOrFullPath);
         }
         #endregion Configuration
 
@@ -150,7 +163,7 @@ namespace GlobalLogger
         /// <summary>
         /// Get a new logger instance called after the calling class
         /// </summary>
-        public GlobalLogger()
+        public LogHelper()
         {
             var callingFrame = new StackFrame(1, false);
             var callingType = callingFrame.GetMethod().DeclaringType.FullName;
@@ -164,7 +177,7 @@ namespace GlobalLogger
         /// <summary>
         /// Get a new logger instance with the given name
         /// </summary>
-        public GlobalLogger(string name)
+        public LogHelper(string name)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(Resources.ErrorGlobalLoggerNameMandatory);
@@ -178,7 +191,7 @@ namespace GlobalLogger
         /// <summary>
         /// Get a new logger instance called after the object passed as parameter
         /// </summary>
-        public GlobalLogger(Object type)
+        public LogHelper(Object type)
         {
             if (type == null)
                 throw new ArgumentNullException(Resources.ErrorGlobalLoggerNullObjectInit);
@@ -295,7 +308,7 @@ namespace GlobalLogger
                 logInfo.Properties[property.Key] = property.Value.ToString();
             }
 
-            _logger.Log(typeof(GlobalLogger), logInfo);
+            _logger.Log(typeof(LogHelper), logInfo);
 
             // clear those properties after each log
             ClearVolatileProperties();
