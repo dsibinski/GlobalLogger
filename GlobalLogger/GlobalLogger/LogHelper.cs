@@ -68,19 +68,19 @@ namespace GlobalLogger
 
 
 
-            List<string> filesToBeIncluded;
+            List<string> filesToBeIncluded = new List<string>();
 
             // Get the first config file as the main one
             var mainConfigFile = configFiles.First();
-            LogManager.Configuration = new XmlLoggingConfiguration(mainConfigFile);
+           
 
             // here check that every additional config is loaded (include tag in the main config file)
-            filesToBeIncluded = GetFilesToBeIncluded(configFiles);
-
+            //filesToBeIncluded = GetFilesToBeIncluded(configFiles);
+            filesToBeIncluded.AddRange(configFiles.Where(configFile => !configFile.Equals(mainConfigFile)));
 
             // Add include tags to the main config file for the missing additional config files
             IncludeAdditionalConfigFiles(mainConfigFile, filesToBeIncluded);
-            // and reload configuration from file
+            // Set the LogManager configuration according to main config file (potentially updated with another included config files)
             LogManager.Configuration = new XmlLoggingConfiguration(mainConfigFile);
         }
 
@@ -112,7 +112,12 @@ namespace GlobalLogger
                 if (isMainConfigFileFromConfigFilesFolder && Path.GetDirectoryName(formattedFilename).Equals(ConfigFilesPath))
                     formattedFilename = Path.GetFileName(formattedFilename);
 
-                rootElement.Add(new XElement("include", new XAttribute("file", formattedFilename)));
+                // Retrieve all included configs filenames
+                var alreadyIncludedFileNames = rootElement.Elements("include").Attributes("file").Select(atr => atr.Value);
+
+                // Include only if not included yet
+                if(!alreadyIncludedFileNames.Contains(formattedFilename))
+                    rootElement.Add(new XElement("include", new XAttribute("file", formattedFilename)));
             }
 
             document.Save(mainConfigFile);
