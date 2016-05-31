@@ -10,6 +10,7 @@ using GlobalLogger.Exceptions;
 using GlobalLogger.Properties;
 using NLog;
 using NLog.Config;
+using NLog.Targets;
 
 namespace GlobalLogger
 {
@@ -492,5 +493,22 @@ namespace GlobalLogger
             }
         }
         #endregion Exception Handling
+
+        #region Additional features
+
+        /// <summary>
+        /// Returns the filename of the logger file target with given name. It only works for FILE targets.
+        /// Method sets the TimeStamp used in config file as current date and Name of the logger as the LogHelper's instance name.
+        /// </summary>
+        /// <param name="fileTargetName">Name of the File logger target</param>
+        /// <returns>Name of the file to which given target writes</returns>
+        public string GetFileTargetFileName(string fileTargetName)
+        {
+            var fileTarget = (FileTarget) LogManager.Configuration.FindTargetByName(fileTargetName);
+            var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now, LoggerName = Name};
+            return fileTarget.FileName.Render(logEventInfo);
+
+        }
+        #endregion Additional features
     }
 }
