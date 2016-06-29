@@ -31,7 +31,7 @@ namespace GlobalLogger
     {
         #region Configuration
         private const string ConfigFilesPath = "LogConfigurations";
-
+        private static string AdditionalConfigsPath;
         /// <summary>
         /// Static constructor - called once, before the first use of LogHelper. Sets all fixed logger's properties.
         /// </summary>
@@ -50,13 +50,19 @@ namespace GlobalLogger
                 mainConfigFile = LogManager.Configuration.FileNamesToWatch.FirstOrDefault();*/
             #endregion OBSOLETE
 
+            var isRunningFromExecutable = System.Reflection.Assembly.GetEntryAssembly() != null;
+
+            AdditionalConfigsPath = isRunningFromExecutable
+                ? (Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\" + ConfigFilesPath)
+                : ConfigFilesPath;
+
             // check if additional config files might be available
-            var configFilesFolderExist = Directory.Exists(ConfigFilesPath);
+            var configFilesFolderExist = Directory.Exists(AdditionalConfigsPath);
 
             var configFiles = new List<string>(4);
             if (configFilesFolderExist)
             {
-                configFiles = Directory.GetFiles(ConfigFilesPath)
+                configFiles = Directory.GetFiles(AdditionalConfigsPath)
                                                  .Where(filename => !String.IsNullOrEmpty(filename))
                                                  .Where(filename => Path.GetExtension(filename).Equals(".config")).ToList();
             }
@@ -65,7 +71,7 @@ namespace GlobalLogger
 
             // if no config file could be found (main or additional), report critical config issue
             if (!colfigFilesExist)
-                throw new NLogConfigurationException(string.Format(Resources.ErrorNLogInitFailWrongConfiguration, ConfigFilesPath));
+                throw new NLogConfigurationException(string.Format(Resources.ErrorNLogInitFailWrongConfiguration, AdditionalConfigsPath));
 
 
 
@@ -94,7 +100,7 @@ namespace GlobalLogger
         {
             // if the main config file is from the additional config files folder, specific case
             var directory = Path.GetDirectoryName(mainConfigFile);
-            var isMainConfigFileFromConfigFilesFolder = directory.Equals(ConfigFilesPath);
+            var isMainConfigFileFromConfigFilesFolder = directory.Equals(AdditionalConfigsPath);
             
             var document = XDocument.Load(mainConfigFile);
             var rootElement = document.FirstNode as XElement;
@@ -110,7 +116,7 @@ namespace GlobalLogger
                     continue;
 
                 // remove ConfigFilesPath from the filename if it comes from the same folder as the main config file
-                if (isMainConfigFileFromConfigFilesFolder && Path.GetDirectoryName(formattedFilename).Equals(ConfigFilesPath))
+                if (isMainConfigFileFromConfigFilesFolder && Path.GetDirectoryName(formattedFilename).Equals(AdditionalConfigsPath))
                     formattedFilename = Path.GetFileName(formattedFilename);
 
                 // Retrieve all included configs filenames
@@ -147,7 +153,7 @@ namespace GlobalLogger
         /// <returns>Local config file path</returns>
         private static string GetConfigLocalFilePath(string configFilePartOrFullPath)
         {
-            return ConfigFilesPath + "\\" + Path.GetFileName(configFilePartOrFullPath);
+            return AdditionalConfigsPath + "\\" + Path.GetFileName(configFilePartOrFullPath);
         }
         #endregion Configuration
 
