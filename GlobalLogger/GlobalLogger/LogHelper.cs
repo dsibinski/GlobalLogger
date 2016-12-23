@@ -14,13 +14,34 @@ using NLog.Targets;
 
 namespace GlobalLogger
 {
+    /// <summary>
+    /// Determines LogLevel (See NLog: Log levels)
+    /// </summary>
     public enum Level
     {
+        /// <summary>
+        /// NLog.Trace - Begin method X, end method X etc
+        /// </summary>
         Trace,
+        /// <summary>
+        /// NLog.Debug - Executed queries, user authenticated, session expired
+        /// </summary>
         Debug,
+        /// <summary>
+        /// NLog.Info - Normal behavior like mail sent, user updated profile etc.
+        /// </summary>
         Info,
+        /// <summary>
+        /// NLog.Warn - Incorrect behavior but the application can continue
+        /// </summary>
         Warning,
+        /// <summary>
+        /// NLog.Error - For example application crashes / exceptions.
+        /// </summary>
         Error,
+        /// <summary>
+        /// NLog.Fatal - Highest level: important stuff down
+        /// </summary>
         Fatal
     }
 
@@ -158,6 +179,9 @@ namespace GlobalLogger
         #endregion Configuration
 
         private readonly ILogger _logger;
+        /// <summary>
+        /// Name of the logger
+        /// </summary>
         public string Name { get; private set; }
 
         #region Persistent and volatile properties
@@ -306,8 +330,30 @@ namespace GlobalLogger
 
         private void Log(LogLevel level, string message)
         {
-            var logInfo = new LogEventInfo(level, _logger.Name, message);
+            var logInfo = InitializeLogInfo(level, message);
 
+            _logger.Log(typeof(LogHelper), logInfo);
+
+            // clear those properties after each log
+            ClearVolatileProperties();
+        }
+
+        private LogEventInfo InitializeLogInfo(LogLevel level, string message)
+        {
+            var logInfo = new LogEventInfo(level, _logger.Name, message);
+            LoadEventProperties(logInfo);
+            return logInfo;
+        }
+
+        private LogEventInfo InitializeLogInfo(LogLevel level, string message, Exception exception)
+        {
+            var logInfo = new LogEventInfo(level, _logger.Name, null, message, null, exception);
+            LoadEventProperties(logInfo);
+            return logInfo;
+        }
+
+        private void LoadEventProperties(LogEventInfo logInfo)
+        {
             // load persistent keys
             foreach (var property in _persistentProperties)
             {
@@ -319,11 +365,6 @@ namespace GlobalLogger
             {
                 logInfo.Properties[property.Key] = property.Value.ToString();
             }
-
-            _logger.Log(typeof(LogHelper), logInfo);
-
-            // clear those properties after each log
-            ClearVolatileProperties();
         }
 
         #region Time measurement
@@ -476,27 +517,12 @@ namespace GlobalLogger
         /// <param name="level"> The level at which the exception and message will be logged. </param>
         public void LogException(Exception exception, string additionalMessage = null, Level level = Level.Error)
         {
-            switch (level)
-            {
-                case Level.Trace:
-                    _logger.Trace(exception, additionalMessage);
-                    break;
-                case Level.Debug:
-                    _logger.Debug(exception, additionalMessage);
-                    break;
-                case Level.Info:
-                    _logger.Info(exception, additionalMessage);
-                    break;
-                case Level.Warning:
-                    _logger.Warn(exception, additionalMessage);
-                    break;
-                case Level.Error:
-                    _logger.Error(exception, additionalMessage);
-                    break;
-                case Level.Fatal:
-                    _logger.Fatal(exception, additionalMessage);
-                    break;
-            }
+            var logInfo = InitializeLogInfo(LogLevelMapper.GetNlogLevel(level), additionalMessage, exception);
+
+            _logger.Log(typeof(LogHelper), logInfo);
+
+            // clear those properties after each log
+            ClearVolatileProperties();
         }
         #endregion Exception Handling
 
@@ -512,6 +538,7 @@ namespace GlobalLogger
         {
             var fileTarget = (FileTarget) LogManager.Configuration.FindTargetByName(fileTargetName);
             var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now, LoggerName = Name};
+            LoadEventProperties(logEventInfo);
             return fileTarget.FileName.Render(logEventInfo);
 
         }
