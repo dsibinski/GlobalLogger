@@ -100,18 +100,26 @@ namespace GlobalLogger
 
             // Get the first config file as the main one
             var mainConfigFile = configFiles.First();
-           
 
+            #region OBSOLETE - ADDITIONAL CONFIG FILES
+            // [3.01.2017] Commented out - functionality suspended (not needed?) + cross-process processing issues
             // here check that every additional config is loaded (include tag in the main config file)
             //filesToBeIncluded = GetFilesToBeIncluded(configFiles);
-            filesToBeIncluded.AddRange(configFiles.Where(configFile => !configFile.Equals(mainConfigFile)));
+            //filesToBeIncluded.AddRange(configFiles.Where(configFile => !configFile.Equals(mainConfigFile)));
+
 
             // Add include tags to the main config file for the missing additional config files
-            IncludeAdditionalConfigFiles(mainConfigFile, filesToBeIncluded);
+            //IncludeAdditionalConfigFiles(mainConfigFile, filesToBeIncluded);
+            #endregion OBSOLETE - ADDITIONAL CONFIG FILES
+
             // Set the LogManager configuration according to main config file (potentially updated with another included config files)
             LogManager.Configuration = new XmlLoggingConfiguration(mainConfigFile);
         }
 
+
+        #region OBSOLETE - ADDITIONAL CONFIG FILES
+        /*
+         * // [3.01.2017] Commented out - functionality suspended (not needed?) + cross-process processing issues
         /// <summary>
         /// Adds include statements into main config file for other configurations files to be used
         /// </summary>
@@ -149,8 +157,8 @@ namespace GlobalLogger
             }
 
             document.Save(mainConfigFile);
-        }
-
+        }*/
+        #endregion OBSOLETE - ADDITIONAL CONFIG FILES
         /// <summary>
         /// Compares the list of additional files to be included into main config file giving the list of non yet included config files
         /// </summary>
